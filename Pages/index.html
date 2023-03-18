@@ -4,12 +4,53 @@
     <title>
         Main
     </title>
+    <style>
+        :root{
+            --rad: 0%;
+        }
+        body{
+            color: #ffffff;
+            background: radial-gradient(circle at center, red var(--rad), blue, green 100% );
+        }
+        button{
+            background-color: #ffffff;
+            color: #000000;
+            border: none;
+            border-radius: 5px; 
+            padding: 10px;
+            font-size: 20px;
+            font-weight: bold;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+
+        }
+        button:hover{
+            background-color: grey;
+            color: #ffffff;
+        }
+
+    </style>
 </head>
 <body>
     <button onclick = "startgame()", style="">
-        start game
+        Start Game
     </button>
     <script>
+        let dirc = false;
+        setInterval(function(){
+            var rad = parseInt(getComputedStyle(document.body).getPropertyValue('--rad'));
+            if((rad > 50) || (rad < 0)){
+                dirc = !dirc;
+            }
+             if(dirc){
+                document.body.style.setProperty('--rad', rad + 1 + "%");
+            }
+            else{
+                document.body.style.setProperty('--rad', rad - 1 + "%");
+            }
+        }, 10);
         function startgame(){
             fetch(window.location.href + "newgame",
             {

@@ -2,6 +2,12 @@ from flask import app, current_app, Flask, request
 import os
 import flask
 import json 
+import random
+#import cohere
+promptStart = f"""
+     play a game of chess with me. Respond only with what you move and what place it moved to
+"""
+
 InUseId = []
 GameMoves = {
 }
@@ -12,7 +18,7 @@ def index():
 
 @app.route("/games/<id>", methods = ['GET'])
 def games(id):
-
+    id = int(id)
     if id not in InUseId:
         return "Invalid Game Id"
     return open("Pages/game.html").read()
@@ -26,13 +32,28 @@ def postGame(id):
 @app.route("/newgame", methods=['POST'] )
 def newgame():
     id = getNewGameId()
+    print(InUseId)
     GameMoves[id] = []
     return json.dumps({"id": id} )
+@app.route("/games/<id>/end", methods = ['GET'])
+def endgame(id):
+    id = int(id)
+    if id not in InUseId:
+        return "Invalid Game Id"
+    InUseId.remove(id)
+    del GameMoves[id]
+    return "Game Ended"
 def getNewGameId():
-    id = 0
+    id = random.randint(100, 999)
     while id in InUseId:
-        id += 1
+        id = random.randint(100, 999)
     InUseId.append(id)
     return id
 def getNextMove(id):
-    return "TODO"
+    promt = promptStart
+    for i in  range(len(GameMoves[int(id)])):
+        promt += str(i) + "." + GameMoves[int(id)][i]
+    return promt
+
+
+
