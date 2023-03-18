@@ -11,16 +11,12 @@
     </button>
     <script>
         function startgame(){
-            fetch(window.location.href + "/newgame",
+            fetch(window.location.href + "newgame",
             {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                    
-                }
             }).then(response => response.json()).then(data => {
-                
-                window.location.href = "/games/" + data['gameid'];
+                console.log(data);
+                window.location.href = "/games/" + data['id'];
             });
         }
     </script>
