@@ -16,4 +16,4 @@ def newgame():
     print("newgame")
     return json.dumps({"id": getNewGameId()} )
 def getNewGameId():
-    return "1234"#Todo
+    return "1234"
