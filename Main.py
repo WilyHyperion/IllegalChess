@@ -52,9 +52,6 @@ def getNewGameId():
         id = random.randint(100, 999)
     InUseId.append(id)
     return id
-<<<<<<< HEAD
-  
-=======
 def getNextMove(id):
     promt = promptStart
     for i in  range(len(GameMoves[int(id)])):
