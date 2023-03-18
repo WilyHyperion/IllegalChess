@@ -22,7 +22,13 @@ def index():
 @app.route("/game")
 def game():
     return open("Pages/game.html").read()
-
+@app.route("/games/<id>/move", methods = ['POST'])
+def move(id):
+    id = int(id)
+    if id not in InUseId:
+        return "Invalid Game Id"
+    GameMoves[id].append(request.json['move'])
+    return getNextMove(id)
 @app.route("/games/<id>", methods = ['GET'])
 def games(id):
     id = int(id)
@@ -56,3 +62,6 @@ def getNewGameId():
         id = random.randint(100, 999)
     InUseId.append(id)
     return id
+def getNextMove(id):
+    id = int(id)
+    return "e4"

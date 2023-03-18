@@ -30,9 +30,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.2/chess.js"
   integrity="sha384-s3XgLpvmHyscVpijnseAmye819Ee3yaGa8NxstkJVyA6nuDFjt59u1QvuEl/mecz" crossorigin="anonymous"></script>
 <script >
-  // --- Begin Example JS --------------------------------------------------------
-  // NOTE: this example uses the chess.js library:
-  // https://github.com/jhlywa/chess.js
 
   var board = null
   var game = new Chess()
@@ -46,23 +43,43 @@
 
     // only pick up pieces for the side to move
     if ((game.turn() === 'w' && piece.search(/^b/) !== -1) ||
-      (game.turn() === 'b' && piece.search(/^w/) !== -1)) {
+      (game.turn() === 'b'))   {
       return false
     }
   }
-
+  let turn = 0
   function onDrop(source, target) {
     // see if the move is legal
     var move = game.move({
       from: source,
       to: target,
-      promotion: 'q' // NOTE: always promote to a queen for example simplicity
+      promotion: 'q' 
     })
 
     // illegal move
     if (move === null) return 'snapback'
-
+    turn+= 1;
     updateStatus()
+    //get the ais move
+    fetch(window.location.href + "/move", {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        move: move.to
+      })
+    }).then((response) => {
+        return response.text()
+      }).then((data) => {
+        let pgn = game.pgn();
+        pgn += " "+ turn +". " +  data;
+        game.load_pgn(pgn)
+        
+      updateStatus()
+      })
+
+      
   }
 
   // update the board position after the piece snap
