@@ -1,4 +1,4 @@
-from flask import app, current_app, Flask, request
+from flask import app, current_app, Flask, request, send_from_directory
 import os
 import flask
 import json 
@@ -12,6 +12,10 @@ InUseId = []
 GameMoves = {
 }
 app = Flask("Chess")
+@app.route("/games/img/<path:path>")
+def img(path):
+    print(path) 
+    return send_from_directory("Pages/img", path)
 @app.route("/")
 def index():
     return open("Pages/index.html").read()
@@ -51,16 +55,4 @@ def getNewGameId():
     while id in InUseId:
         id = random.randint(100, 999)
     InUseId.append(id)
-<<<<<<< HEAD
     return id
-=======
-    return id
-def getNextMove(id):
-    promt = promptStart
-    for i in  range(len(GameMoves[int(id)])):
-        promt += str(i) + "." + GameMoves[int(id)][i]
-    return promt
-
-
-
->>>>>>> c17f6ce0bc01925efda4b9234efa3a48355dc2af
