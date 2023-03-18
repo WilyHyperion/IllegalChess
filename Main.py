@@ -8,6 +8,9 @@ app = Flask("Chess")
 @app.route("/")
 def index():
     return open("Pages/index.html").read()
+@app.route("/game")
+def game():
+    return open("Pages/game.html").read()
 
 @app.route("/games/<id>")
 def games(id):
@@ -22,3 +25,4 @@ def getNewGameId():
         id += 1
     InUseId.append(id)
     return id
+  
