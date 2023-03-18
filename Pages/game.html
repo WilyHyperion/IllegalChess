@@ -39,6 +39,13 @@
   var $status = $('#status')
   var $fen = $('#fen')
   var $pgn = $('#pgn')
+  
+  // --- Start Example JS --------------------------------------------------------
+  var board,
+    game = new Chess(),
+    statusEl = $('#status'),
+    fenEl = $('#fen'),
+    pgnEl = $('#pgn')
 
   function onDragStart(source, piece, position, orientation) {
     // do not pick up pieces if the game is over
@@ -99,9 +106,9 @@
       }
     }
 
-    $status.html(status)
-    $fen.html(game.fen())
-    $pgn.html(game.pgn())
+    statusEl.html(status)
+    fenEl.html(game.fen())
+    pgnEl.html(game.pgn())
   }
 
   var config = {
@@ -109,13 +116,15 @@
     position: 'start',
     onDragStart: onDragStart,
     onDrop: onDrop,
-    onSnapEnd: onSnapEnd
+    onSnapEnd: onSnapEnd,
+    moveSpeed: 'slow',
+    snapbackSpeed: 500,
+    snapSpeed: 125
   }
   board = Chessboard('board1', config)
 
   updateStatus()
   
-// --- End Example JS ----------------------------------------------------------
 </script>
 
 
