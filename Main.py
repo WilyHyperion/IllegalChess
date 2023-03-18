@@ -37,9 +37,3 @@ def getNewGameId():
         id += 1
     InUseId.append(id)
     return id
-<<<<<<< HEAD
-  
-=======
-def getNextMove(id):
-    return "TODO"
->>>>>>> 0a3687454545490fe2954cb3b10970dab8075fd7
