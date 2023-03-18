@@ -15,6 +15,9 @@ app = Flask("Chess")
 @app.route("/")
 def index():
     return open("Pages/index.html").read()
+@app.route("/game")
+def game():
+    return open("Pages/game.html").read()
 
 @app.route("/games/<id>", methods = ['GET'])
 def games(id):
@@ -49,6 +52,9 @@ def getNewGameId():
         id = random.randint(100, 999)
     InUseId.append(id)
     return id
+<<<<<<< HEAD
+  
+=======
 def getNextMove(id):
     promt = promptStart
     for i in  range(len(GameMoves[int(id)])):
