@@ -12,6 +12,9 @@ def index():
 
 @app.route("/games/<id>", methods = ['GET'])
 def games(id):
+
+    if id not in InUseId:
+        return "Invalid Game Id"
     return open("Pages/game.html").read()
 @app.route("/games/<id>", methods = ['POST'])
 def postGame(id):
