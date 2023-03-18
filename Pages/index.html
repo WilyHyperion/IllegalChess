@@ -1,4 +1,27 @@
-<head></head>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        Main
+    </title>
+</head>
 <body>
-    
+    <button onclick = "startgame()">
+        start game
+    </button>
+    <script>
+        function startgame(){
+            fetch(window.location.href + "/newgame",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                    
+                }
+            }).then(response => response.json()).then(data => {
+                
+                window.location.href = "/games/" + data['gameid'];
+            });
+        }
+    </script>
 </body>
