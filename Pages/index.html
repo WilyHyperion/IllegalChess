@@ -42,15 +42,20 @@
         setInterval(function(){
             var rad = parseInt(getComputedStyle(document.body).getPropertyValue('--rad'));
             if((rad > 50) || (rad < 0)){
-                dirc = !dirc;
+                if(rad > 50){
+                    dirc = false;
+                }
+                else{
+                    dirc = true;
+                }
             }
              if(dirc){
                 document.body.style.setProperty('--rad', rad + 1 + "%");
             }
             else{
-                document.body.style.setProperty('--rad', rad - 1 + "%");
+                document.body.style.setProperty('--rad', rad - 5 + "%");
             }
-        }, 10);
+        },20);
         function startgame(){
             fetch(window.location.href + "newgame",
             {
