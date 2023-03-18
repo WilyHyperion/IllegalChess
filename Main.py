@@ -3,7 +3,7 @@ import os
 import flask
 import requests
 import json 
-
+InUseId = []
 app = Flask("Chess")
 @app.route("/")
 def index():
@@ -17,4 +17,8 @@ def newgame():
     print("newgame")
     return json.dumps({"id": getNewGameId()} )
 def getNewGameId():
-    return "1234"
+    id = 0
+    while id in InUseId:
+        id += 1
+    InUseId.append(id)
+    return id
