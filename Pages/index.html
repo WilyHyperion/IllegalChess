@@ -15,7 +15,7 @@
             {
                 method: "POST",
             }).then(response => response.json()).then(data => {
-                console.log(data);
+                localStorage.setItem("gameid", data['id']);
                 window.location.href = "/games/" + data['id'];
             });
         }
