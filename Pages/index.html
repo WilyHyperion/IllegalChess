@@ -1,4 +1,9 @@
 <head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+      rel="stylesheet">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>
@@ -10,31 +15,31 @@
         }
         body{
             color: #ffffff;
-            background: radial-gradient(circle at center, red var(--rad), blue, green 100% );
         }
         button{
             background-color: #ffffff;
-            color: #000000;
+            color: #00000099;
             border: none;
             border-radius: 5px; 
             padding: 10px;
             font-size: 20px;
-            font-weight: bold;
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
+            font-family: 'Source Code Pro', monospace;
+            font-weight: medium;
+            transition: 0.5s;
 
         }
         button:hover{
-            background-color: grey;
-            color: #ffffff;
+          color: #000000;
         }
 
     </style>
 </head>
 <body>
-    <button onclick = "startgame()", style="">
+    <button onclick = "startgame()">
         Start Game
     </button>
     <script>
@@ -65,5 +70,83 @@
                 window.location.href = "/games/" + data['id'];
             });
         }
+    </script>
+    <script>
+      /*get the button element, if the button isn't hovered over, flick through random letters in place of the original letters. If it is hovered, go back to the original text*/
+      var button = document.querySelector("button");
+      var text = "Start Game";
+      var letters = "abcdefghijklmnopqrstuvwxyz";
+      let move = true;
+      /*for(var i = 0; i < text.length; i++){
+        newtext += letters[Math.floor(Math.random() * letters.length)];
+        
+      }*/ 
+      var j = 0;
+      var newtext = "";
+      var textFilled = 0;
+      setInterval(function(){
+        if(move){
+          if(textFilled >0){
+            for (var i = 0; i < text.length; i++) {
+              if (text[i] == " ") {
+                newtext += " ";
+                continue;
+              }
+              newtext += letters[Math.floor(Math.random() * letters.length)];
+
+              //wait 0.1 seconds before adding the next letter
+            }
+            button.textContent = newtext.substring(0, 10-(textFilled-1)) + text.substring(10 - (textFilled - 1) + 1, newtext.length);
+            
+            textFilled--;
+            newtext = "";
+          }
+          else{
+            delay = 200;
+            j = 0;
+            newtext = "";
+            for (var i = 0; i < text.length; i++) {
+              //if the index of the newtext is at the same index of a space, set it to a space
+              if(text[i] == " "){
+                newtext += " ";
+                continue;
+              }
+              newtext += letters[Math.floor(Math.random() * letters.length)];
+              //wait 0.1 seconds before adding the next letter
+            }
+            button.textContent = newtext;
+          }
+        } else {
+          if(button.textContent != text){
+              newtext="";
+              console.log(delay)
+              for (var i = 0; i < text.length; i++) {
+                if (text[i] == " ") {
+                  newtext += " ";
+                  continue;
+                }
+                newtext += letters[Math.floor(Math.random() * letters.length)];
+                //wait 0.1 seconds before adding the next letter
+              }
+              button.textContent = text.substring(0, j + 1) + newtext.substring(j + 1, newtext.length);
+
+              j++;
+              textFilled++;
+          }
+        }
+      }, 50)
+      //make the previous code in the comments loop until the button is hovered over
+      
+      
+    
+      button.addEventListener("mouseover", function(){
+        move = false
+        console.log("hovered");
+        
+      });
+      button.addEventListener("mouseout", function(){
+        move = true
+        
+      });
     </script>
 </body>
