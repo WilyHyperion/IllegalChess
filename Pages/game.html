@@ -51,6 +51,7 @@
     // only pick up pieces for the side to move
     if ((game.turn() === 'w' && piece.search(/^b/) !== -1) ||
       (game.turn() === 'b'))   {
+        console.log("turn: " + game.turn())
       return false
     }
   }
@@ -82,50 +83,209 @@
         let pgn = game.pgn();
         pgn += " "+ turn +". " +  data;
         game.load_pgn(pgn)
-        console.log(pgn)
-        console.log(game.pgn())
-        if (pgn !== game.pgn()) {
-          //check to see if the last moved piece is a pawn using chess.history
-          var history = game.history({ verbose: true })
-          console.log(history)
-          var piece = history[0].piece
-          
-          if(history.length > 2){
-            var prevMove = history[history.length - 2].move
-            var currentMove = history[0].move
-            if(prevMove == currentMove){
-              //set the pgn to the previous move
-              pgn = pgn.slice(0, pgn.length - 2)
-              game.load_pgn(pgn)
-              turn -= 1
-              //split the games fen into spaces
-              var fen = game.fen().split(" ")
-              //change the second index to "w"
-              fen[1] = "w"
-              //join the fen back together
-              fen = fen.join(" ")
-              //set the games fen to the new fen
-              game.load(fen)
+        
+        var currentFEN = game.fen()
+        var fenl = currentFEN.split(" ")
+        var peices = fenl[0]
+        var peicesArray = peices.split("/")
+        for(let i =0; i<peicesArray.length; i++){
+          peicesArray[i] = peicesArray[i].split("")
+         /* if(peicesArray[i].length < 8){
+            for(let j = peicesArray[i].length; j<8; j++){
+              peicesArray[i].push("1")
+            }
+          }*/
+        }
+        //ex of fen: rnbqkbnr/pppp1ppp/8/4p3/3P4/8/PPP1PPPP/RNBQKBNR 
+        // r n b q k b n r 
+        // pppp1ppp
+        // 8
+        // 4p3
+        // 3P4
+        // 8
+        // PPP1PPPP
+        // RNBQKBNR
+        //if there is a number in the array, replace it with that many 1s
+        for(let i =0; i < 8; i++){
+          //split the array into individual characters
+          for (let j =0; j < 8; j++){
+            //console.log("     j: " + j)
+            if (isNaN(peicesArray[i][j])|| peicesArray[i][j] == "1"){
+              if (isNaN(peicesArray[i][j])){
               
-              updateStatus()
+                //console.log("     peicesArray[" + i + "][" + j+"]: " + peicesArray[i][j])
+              }
+              continue
+            }
+            else{
+              
+              try{
+                expand(peicesArray);
+
+                }
+                catch(e){
+                  continue
+                }
             }
           }
-          
         }
-        //if the FEN is missing a piece, add it
+        for(let i =0; i<8; i++){
+          try{
+          peicesArray[i] = peicesArray[i].split("");
+          }catch{
+            continue
+          }
+        }
+        
+        var dataTemp = (["a","b","c","d","e","f","g"].includes(data.substring(0,1))) ? "p" + data : data 
+        var pieceName = dataTemp.substring(0,1)       
+        var peicelocal = data.substring(data.length-2, data.length)
+        
+        peicesArray[numFromLetter(peicelocal.substring(0,1))][parseInt(peicelocal.substring(data.length-1, data.length))-1] = pieceName.toLowerCase()
+        peicesArray = compress(peicesArray)
+        //at the end of each array in the 2d array, add a / and join the array
+        for(let i =0; i<peicesArray.length; i++){
+          peicesArray[i] = peicesArray[i].join("")
+        }
+        peicesArray = peicesArray.join("/")
+        
+        console.log(fenl)
+        peicesArray  += " w"
+        for(let i = 2; i<fenl.length; i++){
+          console.log("i: " + i + "/ fenl: " + fenl.length)
+          console.log(typeof(peicesArray))
+          if (i <= fenl.length-2){
+            peicesArray += " " + fenl[i]
+          }
+          else{
+            peicesArray += " 0"
+          }
+          //console.log(peicesArray[i])
+        }
+        currentFEN = peicesArray
+        console.log(currentFEN)
+        
+        game.load(currentFEN)
+        console.log("current = " + game.fen())
+        console.log("turn = " + game.turn())
+        game.turn = function() {
+          return 'w';
+        };
+        console.log("new turn = " + game.turn())
+        
 
         updateStatus()
-      })
+        
 
+      })
+      
       
   }
+
+  //0 based
+  function numFromLetter(letter) {
+    return ["a","b","c","d","e","f","g"].indexOf(letter)
+  }
+  function expand(arr) {
+  for (let i = 0; i < arr.length; i++) {
+    const row = arr[i];
+    for (let j = 0; j < row.length; j++) {
+      const cell = row[j];
+      if (!isNaN(cell) && cell > 1) {
+        const numOnes = parseInt(cell) - 1;
+        for (let k = 1; k <= numOnes; k++) {
+          row.splice(j + k, 0, "1");
+        }
+        row[j] = "1";
+      }
+    }
+  }
+  return arr;
+}
+function compress(arr) {
+  const compressedArr = [];
+  for (let i = 0; i < arr.length; i++) {
+    const row = arr[i];
+    const compressedRow = [];
+    let numOnes = 0;
+    for (let j = 0; j < row.length; j++) {
+      const cell = row[j];
+      if (cell === "1") {
+        numOnes++;
+      } else {
+        if (numOnes > 0) {
+          compressedRow.push(numOnes + 1);
+          numOnes = 0;
+        }
+        compressedRow.push(cell);
+      }
+    }
+    if (numOnes > 0) {
+      compressedRow.push(numOnes + 1);
+    }
+    compressedArr.push(compressedRow);
+  }
+  return compressedArr;
+}
 
   // update the board position after the piece snap
   // for castling, en passant, pawn promotion
   function onSnapEnd() {
     board.position(game.fen())
   }
+  function pgntofen(pgn){
+    fenPositions = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR'
+    chessBoardArray = 
+      [
+      'r','n','b','q','k','b','n','r',
+      'p','p','p','p','p','p','p','p',
+      '1','1','1','1','1','1','1','1',
+      '1','1','1','1','1','1','1','1',
+      '1','1','1','1','1','1','1','1',
+      '1','1','1','1','1','1','1','1',
+      'P','P','P','P','P','P','P','P',
+      'R','N','B','Q','K','B','N','R'
+    ]
+    whiteMove = true
+    encroissantSquare = '-'
+    castlingRights = 'KQkq'
+    halfMoves = 0
+    moveNumber = 0
+    lastMove = 'First move'
 
+    function printFEN() {
+      return getFENpositions() + ' ' + (whiteMove ? 'w' : 'b') + ' ' + (castlingRights ? castlingRights : '-') + ' ' + encroissantSquare  + ' ' + halfMoves + ' ' + moveNumber
+    }
+
+    function getFENpositions() {
+      currentFEN = ''
+      rowEnds = [8, 16, 24, 32, 40, 48, 56, 64]
+      rowEnds.forEach(n => {
+        blankSquares = 0
+        chessBoardArray.slice(n-8, n).forEach(i => {
+          if (i !== '1') {
+            if (blankSquares > 0) {
+              currentFEN += blankSquares
+              blankSquares = 0
+            }
+            currentFEN += i
+          }
+          else {
+            blankSquares += 1
+          }
+        })
+        if (blankSquares > 0) {
+          currentFEN += blankSquares
+          blankSquares = 0
+        }
+        currentFEN += '/'
+      })
+      currentFEN = currentFEN.slice(0,-1)
+      return currentFEN
+  }
+
+
+  }
   function updateStatus() {
     var status = ''
 

@@ -3,7 +3,7 @@ import os
 import flask
 import json 
 import random
-import Scrapper
+#import Scrapper
 #import cohere
 promptStart = f"""
      play a game of chess with me. Respond only with what you move and what place it moved to
@@ -63,7 +63,6 @@ def getNewGameId():
         id = random.randint(100, 999)
     InUseId.append(id)
     return id
-def getNextMove(id, move):
+def getNextMove(id):
     id = int(id)
-    
-    return "e5"
+    return "e4"
