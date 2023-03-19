@@ -14,11 +14,11 @@
             --rad: 0%;
         }
         body{
-            color: #ffffff;
+            background-color: #181a1b;
         }
         button{
-            background-color: #ffffff;
-            color: #00000099;
+            background-color: #181a1b;
+            color: #e8e6e3;
             border: none;
             border-radius: 5px; 
             padding: 10px;
@@ -33,7 +33,7 @@
 
         }
         button:hover{
-          color: #000000;
+          color: #fffdfa;
         }
 
     </style>
@@ -43,24 +43,7 @@
         Start Game
     </button>
     <script>
-        let dirc = false;
-        setInterval(function(){
-            var rad = parseInt(getComputedStyle(document.body).getPropertyValue('--rad'));
-            if((rad > 50) || (rad < 0)){
-                if(rad > 50){
-                    dirc = false;
-                }
-                else{
-                    dirc = true;
-                }
-            }
-             if(dirc){
-                document.body.style.setProperty('--rad', rad + 1 + "%");
-            }
-            else{
-                document.body.style.setProperty('--rad', rad - 5 + "%");
-            }
-        },20);
+      
         function startgame(){
             fetch(window.location.href + "newgame",
             {
