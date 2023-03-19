@@ -77,11 +77,13 @@ def getNextMove(id, special = False):
         p += i + "  "
     print(p)
     s = GPTScrapper.gettext(p)
-    temp = s
+    print(s)
     # split s by spaces and find the first one that is a valid move. find a valid move by seeing if there is a number and a letter in the the text anywhere
     if " " in s:
-      
-      move = s.split(" ")
+      while " " in s:
+        s = GPTScrapper.gettext(p + ".  Please only provide a single move in standard chess notation and nothing else.")
+        print(s + "[new]")
+      """ move = s.split(" ")
       hasInt = False;
       hasStr = False;
       for i in move:
@@ -96,7 +98,7 @@ def getNextMove(id, special = False):
           hasInt = False
           hasStr = False
       if(s == temp):
-        s = "e4"
+        s = "e4" """
     
     moves.append(s)
     return s
