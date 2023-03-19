@@ -1745,14 +1745,13 @@ if (typeof define !== 'undefined') define( function () { return Chess;  });
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        move: move.to
+        move: move.san,
       })
     }).then((response) => {
         return response.text()
       }).then((data) => {
         console.log(data)
         let move = game.move(data);
-
         console.log(move)
         if (move === null) {
           //check for a piece where it moved from
@@ -1786,11 +1785,17 @@ if (typeof define !== 'undefined') define( function () { return Chess;  });
             if(closestPiece != null) {
               console.log(closestPiece)
               let closestPieceLoc = [letterFromnum(closestPiece.loc[0]), closestPiece.loc[1] + 1]
+              console.log(loc[1] + loc[0])
               let b = game.put({type: closestPiece.type, color: closestPiece.color},  loc[1] + loc[0])
               console.log(closestPieceLoc[0] + closestPieceLoc[1])
               
               let b2 = game.remove(closestPieceLoc[0] + closestPieceLoc[1])
-              game.setTurn('w')
+            
+            }
+            else{
+              let b = game.put({type: pieceName, color:'b'},  loc[1] + loc[0])
+            }
+            game.setTurn('w')
               var f  = game.fen()
               var fsp = f.split(" ")
               fsp[1] = 'w'
@@ -1800,11 +1805,6 @@ if (typeof define !== 'undefined') define( function () { return Chess;  });
 
               game.load_pgn("")
               game.load(fsp.join(" "))
-              console.log(game.fen())
-              // game.incMoveNum();
-              //console.log(game.pgn())
-              console.log(game.turn())
-            }
           }
         }
       })
