@@ -1,0 +1,50 @@
+function textModelSubmit(){
+var a=document.getElementsByClassName("model-input-file-picker").length, 
+ 
+ 
+
+b=document.getElementsByClassName("model-input-text-input").length;
+0==a&&1==b?(textModelSaveInputs(), 
+ 
+v sessionStorage.setItem("textModelSubmitOnload", 
+ 
+ "true"), 
+ 
+
+window.location.reload()):autoSubmit()
+}
+
+
+
+function textModelSaveInputs(){
+  var a={};
+  if("file"==currentUploadMode)
+  for(var
+b=$jscomp.makeIterator(document.getElementsByClassName("model-input-file-picker")), 
+ 
+c=b.next();!c.done;c=b.next()){c=c.value;if(""==c.value)return;a[c.name]=c}else
+if("url"==currentUploadMode)for(b=$jscomp.makeIterator(document.getElementsByClassName("model-input-url-input")), 
+ 
+c=b.next();!c.done;c=b.next()){c=c.value;if(!c.value)return;a[c.name]=c.value}else
+console.log("unknown upload input
+mode");b=$jscomp.makeIterator(document.getElementsByClassName("model-input-text-input"));for(c=b.next();!c.done;c=b.next())c=c.value, 
+ 
+a[c.name]=c.value;try{var
+d=JSON.parse(sessionStorage.getItem("textModelShapesDict"));a.width=d.width+"";a.height=d.height+""}catch(e){console.log("couldn't
+get image shape from session
+storage", 
+ 
+e)}console.log(a);sessionStorage.setItem("textModelSubmitInputsDict", 
+ 
+JSON.stringify(a))}
+function textModelSubmit(){var
+    a=document.getElementsByClassName("model-input-file-picker").length, 
+ 
+b=document.getElementsByClassName("model-input-text-input").length;0==a&&1==b?(textModelSaveInputs(), 
+ 
+sessionStorage.setItem("textModelSubmitOnload", 
+ 
+"true"), 
+ 
+window.location.reload()):  ()}function
+showSubscriptionModal(){document.getElementById("subscription-modal").showModal()}
