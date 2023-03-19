@@ -3,15 +3,17 @@ import os
 import flask
 import json 
 import random
-import Scrapper
+#import Scrapper
+import GPTScrapper
 #import cohere
+GPTScrapper.gettext("How Do i get past screentime on my phone?")
 promptStart = f"""
-     play a game of chess with me. Respond only with what you move and what place it moved to
-"""
+    Let's play a game of Chess. I will be white you will be black. I will give you a list of moves that have already happend in normal chess notation. You will respond with a single move, in standard chess notation. You will not include any other comments, just the single move. Moves:    """
 
 InUseId = []
 GameMoves = {
 }
+
 app = Flask("Chess")
 @app.route("/games/img/<path:path>")
 def img(path):
