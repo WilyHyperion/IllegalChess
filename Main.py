@@ -29,14 +29,14 @@ def game():
 def move(id):
     id = int(id)
     if id not in InUseId:
-        return "Invalid Game Id"
+        return open("Pages/invalid.html").read()
     GameMoves[id].append(request.json['move'])
     return getNextMove(id)
 @app.route("/games/<id>", methods = ['GET'])
 def games(id):
     id = int(id)
     if id not in InUseId:
-        return "Invalid Game Id"
+        return open("Pages/invalid.html").read()
     return open("Pages/game.html").read()
 @app.route("/games/<id>", methods = ['POST'])
 def postGame(id):
@@ -55,7 +55,7 @@ def newgame():
 def endgame(id):
     id = int(id)
     if id not in InUseId:
-        return "Invalid Game Id"
+        return open("Pages/invalid.html").read()
     InUseId.remove(id)
     del GameMoves[id]
     return "Game Ended"
@@ -67,4 +67,4 @@ def getNewGameId():
     return id
 def getNextMove(id):
     id = int(id)
-    return "e4"
+    return "e5"

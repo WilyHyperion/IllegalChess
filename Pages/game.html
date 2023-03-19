@@ -1793,12 +1793,13 @@ if (typeof define !== 'undefined') define( function () { return Chess;  });
               var f  = game.fen()
               var fsp = f.split(" ")
               fsp[1] = 'w'
-              fsp[-1] = 0
-              fsp[-2] = 0
+              fsp[3] = '-'
+              
               var final = '';
 
               game.load_pgn("")
               game.load(fsp.join(" "))
+              console.log(game.fen())
               // game.incMoveNum();
               //console.log(game.pgn())
               console.log(game.turn())

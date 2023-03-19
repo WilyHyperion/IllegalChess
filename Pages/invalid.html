@@ -16,6 +16,20 @@
         body{
             background-color: #181a1b;
         }
+        h1{
+            color: #e8e6e3;
+            border: none;
+            border-radius: 5px; 
+            padding: 10px;
+            font-size: 30px;
+            position: absolute;
+            top: 15%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: 'Source Code Pro', monospace;
+            font-weight: 400;
+            transition: 0.5s;
+        }
         button{
             background-color: #181a1b;
             color: #e8e6e3;
@@ -39,8 +53,11 @@
     </style>
 </head>
 <body>
+    <h1 style="">
+      Illegal Chess
+    </h1>
     <button onclick = "startgame()">
-        Play the Game
+        Start Game
     </button>
     <script>
       
@@ -57,10 +74,7 @@
     <script>
       /*get the button element, if the button isn't hovered over, flick through random letters in place of the original letters. If it is hovered, go back to the original text*/
       var button = document.querySelector("button");
-      // create a list of phrases and choose a random one of them to be text
-      var phrases = ["Play the Game" , "Play the AI", "Fight the Ai", "Star Game", "Begin Game", "Begin AI", "Play", "Begin Engine"]
-
-      var text = phrases[Math.floor(Math.random() * phrases.length)];
+      var text = "Start Game";
       var letters = "abcdefghijklmnopqrstuvwxyz";
       let move = true;
       /*for(var i = 0; i < text.length; i++){
