@@ -7,7 +7,7 @@ import random
 import GPTScrapper
 #import cohere
 promptStart = f"""
-    Let's play a game of Chess. I will be white you will be black. I will give you a list of moves that have already happend in normal chess notation. You will respond with a single move, in standard chess notation. You will not include any other comments, just the single move. Moves:    """
+    Let's play a game of Chess. I will be white you will be black. I will give you a list of moves that have already happend in normal chess notation. You will respond with a single move, in standard chess notation. You will not include any other comments, just the single move. If you think an move is illegal or invaild, still provide a move like before Moves:    """
 
 InUseId = []
 GameMoves = {
@@ -77,3 +77,10 @@ def getNextMove(id):
     print(s)
     moves.append(s)
     return s
+@app.route("/games/<id>/comments", methods = ['GET'])
+def getComments(id):
+    id = int(id)
+    if id not in InUseId:
+        return "bad game id"
+    return GPTScrapper.getUnRealtedText("Provide a comment on the game, with these moves: " + str(GameMoves[id]))
+
