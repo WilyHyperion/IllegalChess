@@ -35,8 +35,7 @@
   var $fen = $('#fen')
   var $pgn = $('#pgn')
   
-  // --- Start Example JS --------------------------------------------------------
-  var board = new Chess(),
+  var board = null
     statusEl = $('#status'),
     fenEl = $('#fen'),
     pgnEl = $('#pgn')
@@ -77,41 +76,48 @@
     }).then((response) => {
         return response.text()
       }).then((data) => {
+        console.log(data)
         let move = game.move(data);
+
+        console.log(move)
         if (move === null) {
           //check for a piece where it moved from
           if(data.substring('x').length > 0) {
-            
             let pieceName = data.substring(0, 1)
             if(numFromLetter(pieceName) > -1) {
               pieceName = "p";
-            
             }
-            let loc = [ data.substring(data.length - 1), data.substring(data.length - 2, data.length - 1)] 
-            loc[0] = numFromLetter(loc[0])
-            loc[1] = parseInt(loc[1]) - 1
+            let loc = [data.substring(data.length - 1), data.substring(data.length - 2, data.length - 1)] 
             let closestPiece = null;
+            let Cboard = getBoard(game);
             
-            for(let v of game.board()){
+            for(let v of Cboard){
               for(let s of v){
                 if(s != null && s.type == pieceName && s.color == game.turn()){
+                  //check if it is closer
                   if(closestPiece == null) {
                     closestPiece = s;
                   } else {
-                    let closestPieceLoc = [closestPiece.loc[0], closestPiece.loc[1]]
-                    let sLoc = [s.loc[0], s.loc[1]]
-                    if(Math.abs(closestPieceLoc[0] - loc[0]) + Math.abs(closestPieceLoc[1] - loc[1]) > Math.abs(sLoc[0] - loc[0]) + Math.abs(sLoc[1] - loc[1])) {
+                    numLoc = [numFromLetter((loc[1]) ) , parseInt(loc[0]) - 1]
+                    console.log(numLoc)
+                    let dist1 = Math.sqrt(Math.pow(numLoc[0] - s.loc[0], 2) + Math.pow(numLoc[1] - s.loc[1], 2))
+                    let dist2 = Math.sqrt(Math.pow(numLoc[0] - closestPiece.loc[0], 2) + Math.pow(numLoc[1] - closestPiece.loc[1], 2))
+                    if(dist1 < dist2) {
                       closestPiece = s;
                     }
+
+                    console.log(dist1)
                   }
                 }
               }
             }
+            console.log(closestPiece)
             if(closestPiece != null) {
-              let closestPieceLoc = [closestPiece.loc[0], closestPiece.loc[1]]
-              let sLoc = [s.loc[0], s.loc[1]]
-              game.put({type: closestPiece.type, color: closestPiece.color}, sLoc)
-              game.remove(closestPieceLoc)
+              console.log(closestPiece)
+              let closestPieceLoc = [letterFromnum(closestPiece.loc[0]), closestPiece.loc[1] + 1]
+              let b = game.put({type: closestPiece.type, color: closestPiece.color},  loc[1] + loc[0])
+              console.log(closestPieceLoc[0] + closestPieceLoc[1])
+              let b2 = game.remove(closestPieceLoc[0] + closestPieceLoc[1])
               }
           }
         }
@@ -119,7 +125,24 @@
       
       
   }
-
+  function letterFromnum(num) {
+    return ["a","b","c","d","e","f","g","h"][num]
+  }
+  function getBoard(game){
+    let board = [[], [], [], [], [], [], [], []];
+    for(let l of ["a","b","c","d","e","f","g","h"]){
+      
+      for(let i = 1; i < 9; i++){
+        let loc = l + i;
+        let piece = game.get(loc);
+        if(piece != null) {
+          piece.loc = [numFromLetter(l), i - 1]
+        }
+        board[i - 1].push(piece)
+      }
+    }
+    return board;
+    }
   //0 based
   function numFromLetter(letter) {
     return ["a","b","c","d","e","f","g"].indexOf(letter)
