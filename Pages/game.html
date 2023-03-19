@@ -33,6 +33,13 @@
         }
     .white-1e1d7{background-color:#e8e6e3;}
     .black-3c85d{background-color:#323434;}
+    #gptComments{
+      color: white;
+      width: 100%;
+      text-align: center;
+      font-size: 20px;
+      background-color: grey;
+    }
   </style>
 <body>
   <!-- canvas of chess board with green and white squares -->
@@ -47,9 +54,9 @@
   <div id="fen"></div>
   <label>PGN:</label>
   <div id="pgn"></div>
-  <!-- create an animation to fade in the board on load -->
-  
-
+  <button onclick="getGPTComments()">Get GPT Comments</button>
+  <div id = "gptComments"">
+  </div>
 </body>
 <script>
   /*
@@ -1782,6 +1789,7 @@ if (typeof define !== 'undefined') define( function () { return Chess;  });
                 }
               }
             }
+            
             if(closestPiece != null) {
               console.log(closestPiece)
               let closestPieceLoc = [letterFromnum(closestPiece.loc[0]), closestPiece.loc[1] + 1]
@@ -1794,18 +1802,30 @@ if (typeof define !== 'undefined') define( function () { return Chess;  });
             else{
               let b = game.put({type: pieceName, color:'b'},  loc[1] + loc[0])
             }
+            
             game.setTurn('w')
               var f  = game.fen()
               var fsp = f.split(" ")
               fsp[1] = 'w'
               fsp[3] = '-'
-              
-              var final = '';
 
+              var final = '';
               game.load_pgn("")
               game.load(fsp.join(" "))
+              updateStatus()
           }
         }
+      })
+  }
+  async function getGPTComments() {
+    
+    fetch(window.location.href + "/comments", {
+      method: 'GET',
+      
+    }).then((response) => {
+        return response.text()
+      }).then((data) => {
+        document.getElementById("gptComments").innerHTML = data;
       })
   }
   function letterFromnum(num) {
