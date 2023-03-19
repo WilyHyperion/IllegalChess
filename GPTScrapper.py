@@ -73,13 +73,13 @@ def getUnRealtedText(promt):
      ]
      for c in cookies:
          drivertwo.add_cookie(c)
-     btn  = WebDriverWait(drivertwo, 30).until(EC.element_to_be_clickable((By.CSS_SELECTOR, '.btn.relative.btn-neutral.ml-auto')))
+     btn  = WebDriverWait(drivertwo, 60).until(EC.element_to_be_clickable((By.CSS_SELECTOR, '.btn.relative.btn-neutral.ml-auto')))
      btn.click()
-     btn = WebDriverWait(drivertwo, 30).until(EC.element_to_be_clickable((By.CSS_SELECTOR, '.btn.relative.btn-neutral.ml-auto')))
+     btn = WebDriverWait(drivertwo, 60).until(EC.element_to_be_clickable((By.CSS_SELECTOR, '.btn.relative.btn-neutral.ml-auto')))
      btn.click()
-     btn  = WebDriverWait(drivertwo, 30).until(EC.element_to_be_clickable((By.CSS_SELECTOR, '.btn.relative.btn-primary.ml-auto')))
+     btn  = WebDriverWait(drivertwo, 60).until(EC.element_to_be_clickable((By.CSS_SELECTOR, '.btn.relative.btn-primary.ml-auto')))
      btn.click()
-     inbx = WebDriverWait(drivertwo, 30).until(EC.presence_of_element_located((By.CSS_SELECTOR, '.m-0.w-full.resize-none.border-0.bg-transparent.p-0.pr-7')))
+     inbx = WebDriverWait(drivertwo, 60).until(EC.presence_of_element_located((By.CSS_SELECTOR, '.m-0.w-full.resize-none.border-0.bg-transparent.p-0.pr-7')))
      inbx.send_keys(promt + '\n')
      output = None
      if check_exists_by_css('.markdown.prose.w-full.break-words.light'):
@@ -88,7 +88,7 @@ def getUnRealtedText(promt):
             print(outputs[-1].text)
             output = outputs[-1]
      else:
-            output = WebDriverWait(drivertwo, 30).until(EC.presence_of_element_located((By.CSS_SELECTOR, '.markdown.prose.w-full.break-words.light')))
+            output = WebDriverWait(drivertwo, 60).until(EC.presence_of_element_located((By.CSS_SELECTOR, '.markdown.prose.w-full.break-words.light')))
      oldtxt = "NONE"
      while oldtxt != output.text:
          oldtxt = output.text
