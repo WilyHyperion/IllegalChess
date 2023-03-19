@@ -13,19 +13,41 @@
         class="piece-417db" data-piece="wP" style="width: 49px; height: 49px; display: none;">
 
 <head/>
+<style>
+    /*create a keyfram animation that fades the board in */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+    #board1 {
+      animation: fadeIn 2s cubic-bezier(0.21, 0.88, 0.18, 1);
+    }
+    body{
+          background-color: #181a1b;
+          
 
+        }
+    .white-1e1d7{background-color:#e8e6e3;}
+    .black-3c85d{background-color:#323434;}
+  </style>
 <body>
   <!-- canvas of chess board with green and white squares -->
   <!-- create a div and center everything inside it -->
   <div style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
     <div id="board1" style="width: 50%; "></div>
   </div>
-  <label>Status:</label>
-  <div id="status"></div>
+
+  
+ 
   <label>FEN:</label>
   <div id="fen"></div>
   <label>PGN:</label>
   <div id="pgn"></div>
+  <!-- create an animation to fade in the board on load -->
   
 
 </body>
@@ -61,6 +83,7 @@
       to: target,
       promotion: 'q' 
     })
+    
 
     // illegal move
     if (move === null && game.turn() === 'w') return 'snapback'
@@ -281,6 +304,7 @@ function compress(arr) {
     fenEl.html(game.fen())
     pgnEl.html(game.pgn())
   }
+  
 
   var config = {
     draggable: true,
