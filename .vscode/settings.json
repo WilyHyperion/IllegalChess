@@ -1,5 +1,6 @@
 {
   "cSpell.words": [
     "newgame"
-  ]
+  ],
+  "python.analysis.typeCheckingMode": "basic"
 }
