@@ -11,7 +11,7 @@
       integrity="sha384-8Vi8VHwn3vjQ9eUHUxex3JSN/NFqUg3QbPyX8kWyb93+8AC/pPWTzj+nHtbC5bxD" crossorigin="anonymous"></script>
     <img src="https://chessboardjs.com/img/chesspieces/wikipedia/wP.png" id="c2f9-9ab7-a5c4-907a-724c-1dc4-d593-195a" alt=""
         class="piece-417db" data-piece="wP" style="width: 49px; height: 49px; display: none;">
-
+    
 <head/>
 <style>
   :root{
@@ -43,6 +43,7 @@
       text-align: center;
       font-size: 20px;
       background-color: grey;
+      opacity: 1;
     }
     .btn {
   width: 180px;
@@ -86,6 +87,7 @@ svg {
   width: 180px;
   height: 60px;
   position: absolute;
+  opacity: 1;
 }
 .container {
   padding-top: 80px;
@@ -100,7 +102,7 @@ svg {
 <body>
   <!-- canvas of chess board with green and white squares -->
   <!-- create a div and center everything inside it -->
-  <div style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
+  <div style="display: flex; justify-content: center; align-items: center; flex-direction: column; margin-top: 1%">
     <div id="board1" style="width: 50%; "></div>
   </div>
   <div class="container">
@@ -1896,7 +1898,7 @@ if (typeof define !== 'undefined') define( function () { return Chess;  });
           }
         }
         game.setTurn('w')
-        document.documentElement.style.setProperty('--background-color', "#474C4F");
+        document.documentElement.style.setProperty('--background-color', "#2d3133");
         var f  = game.fen()
         var fsp = f.split(" ")
         fsp[1] = 'w'

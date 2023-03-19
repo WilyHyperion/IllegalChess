@@ -16,6 +16,9 @@ GameMoves = {
 
 
 app = Flask("Chess")
+@app.route("/favicon.ico")
+def imag():
+  return send_from_directory("Pages/img/anarchy.png", "anarchy.png")
 @app.route("/games/img/<path:path>")
 def img(path):
     print(path) 
@@ -74,22 +77,33 @@ def getNextMove(id, special = False):
         p += i + "  "
     print(p)
     s = GPTScrapper.gettext(p)
+    temp = s
     # split s by spaces and find the first one that is a valid move. find a valid move by seeing if there is a number and a letter in the the text anywhere
-    move = s.split(" ")
-    for i in move:
-         print(i)
-         for j in i:
-             if j.isnumeric():
-                 s = i
-                 break
+    if " " in s:
+      
+      move = s.split(" ")
+      hasInt = False;
+      hasStr = False;
+      for i in move:
+        for j in i:
+          if j.isnumeric():
+            hasInt = True
+          if j.isalpha():
+            hasStr = True
+        if(hasInt and hasStr):
+          s = move.index(i)
+        else:
+          hasInt = False
+          hasStr = False
+      if(s == temp):
+        s = "e4"
     
     moves.append(s)
-    print("s" + s)
     return s
 @app.route("/games/<id>/comments", methods = ['GET'])
 def getComments(id):
     id = int(id)
     if id not in InUseId:
         return "bad game id"
-    return GPTScrapper.getUnRealtedText("Provide a comment on the chess game, with these moves. Make your comments helpful for someone trying to learn chess: " + str(GameMoves[id]))
+    return GPTScrapper.getUnRealtedText("Provide a comment on the chess game, with these moves. Make your comments helpful for someone trying to learn chess while also being less than 30 words: " + str(GameMoves[id]))
 

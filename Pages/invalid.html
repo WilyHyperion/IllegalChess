@@ -70,7 +70,7 @@
       
       /*get the button element, if the button isn't hovered over, flick through random letters in place of the original letters. If it is hovered, go back to the original text*/
       var button = document.querySelector("button");
-      var text = "You seem lost. Need some help? CLick here.";
+      var text = "You seem lost.";
       var letters = "abcdefghijklmnopqrstuvwxyz%$#@*?][{}]";
       let move = true;
       /*for(var i = 0; i < text.length; i++){
@@ -91,13 +91,7 @@
                 newtext += " ";
                 textFilled--;
                 continue;
-              } else if(text[i] == "." || text[i] == "," || text[i] == "!" || text[i] == "?"){
-                if(counter > 20 ){
-                  newtext += text[i];
-                  counter = 0;
-                }
-                
-              }
+              } 
               newtext += letters[Math.floor(Math.random() * letters.length)];
 
               //wait 0.1 seconds before adding the next letter
@@ -128,21 +122,7 @@
                 if (text[i] == " ") {
                   newtext += " ";
                   continue;
-                } else if(text[i] == "." || text[i] == "," || text[i] == "!" || text[i] == "?"){
-                  
-                  if(counter > 2000 ){
-                    newtext += text[i];
-                    counter = 0;
-                    
-                  }else{
-                    counter++;
-                    i--;
-
-                    
-                    continue;
-                  }
-                  
-                }
+                } 
                 newtext += letters[Math.floor(Math.random() * letters.length)];
                 //wait 0.1 seconds before adding the next letter
               }
@@ -160,7 +140,7 @@
         //wait 0.7 seconds
         setTimeout(function(){
           move = false
-        }, 1000)
+        }, 400)
         
         
       }
