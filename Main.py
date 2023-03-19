@@ -91,5 +91,5 @@ def getComments(id):
     id = int(id)
     if id not in InUseId:
         return "bad game id"
-    return GPTScrapper.getUnRealtedText("Provide a comment on the chess game, with these moves. Make your comments helpful for someone trying to learn chess: " + str(GameMoves[id]))
+    return GPTScrapper.getUnRealtedText("Provide a comment on the chess game, with these moves. Make your comments helpful for someone trying to learn chess. Keep it short, around 2-3 points: " + str(GameMoves[id]))
 
