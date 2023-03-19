@@ -8,7 +8,7 @@ import re
 import GPTScrapper
 #import cohere
 promptStart = f"""Let's play a game of Chess. I will be white you will be black. I will give you a list of moves that have already happend in normal chess notation. You will respond with a single move, in standard chess notation. You will not include any other comments, just the single move. If you think an move is illegal or invaild, still provide a move like before Moves:"""
-
+#promptStart = f""""Lets play chess. Moves so far: """
 InUseId = []
 GameMoves = {
 
@@ -74,16 +74,17 @@ def getNextMove(id, special = False):
         p += i + "  "
     print(p)
     s = GPTScrapper.gettext(p)
-    print(s)
     # split s by spaces and find the first one that is a valid move. find a valid move by seeing if there is a number and a letter in the the text anywhere
-    move = [s.split(" ")]
+    move = s.split(" ")
     for i in move:
-      x = re.search(b"^((?:[NBRQK]([a-h1-8])?x?(?!\2)[a-h](?!\2)[1-8]|[NBRQK]x?[a-h][1-8]|(?:[a-h]x)?[a-h](?:[1-8](?:\(ep\))?|[18]=[NBRQ])|(?:0-){1,2}0)\+{0,2})$", i)
-      if ( x.start() >= 1):
-        s = i
-      
+         print(i)
+         for j in i:
+             if j.isnumeric():
+                 s = i
+                 break
     
     moves.append(s)
+    print("s" + s)
     return s
 @app.route("/games/<id>/comments", methods = ['GET'])
 def getComments(id):

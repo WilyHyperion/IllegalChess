@@ -49,7 +49,7 @@ def gettext(request):
          oldtxt = output.text
          if oldtxt == "":
             oldtxt = "NONE"
-         time.sleep(0.5)
+         time.sleep(5)
      return output.text
 
 def check_exists_by_css(css):
