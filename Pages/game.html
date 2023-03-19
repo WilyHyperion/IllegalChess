@@ -30,16 +30,13 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.2/chess.js"
   integrity="sha384-s3XgLpvmHyscVpijnseAmye819Ee3yaGa8NxstkJVyA6nuDFjt59u1QvuEl/mecz" crossorigin="anonymous"></script>
 <script >
-
-  var board = null
-  var game = new Chess()
+  const game = new Chess()
   var $status = $('#status')
   var $fen = $('#fen')
   var $pgn = $('#pgn')
   
   // --- Start Example JS --------------------------------------------------------
-  var board,
-    game = new Chess(),
+  var board = new Chess(),
     statusEl = $('#status'),
     fenEl = $('#fen'),
     pgnEl = $('#pgn')
@@ -80,103 +77,44 @@
     }).then((response) => {
         return response.text()
       }).then((data) => {
-        let pgn = game.pgn();
-        pgn += " "+ turn +". " +  data;
-        game.load_pgn(pgn)
-        
-        var currentFEN = game.fen()
-        var fenl = currentFEN.split(" ")
-        var peices = fenl[0]
-        var peicesArray = peices.split("/")
-        for(let i =0; i<peicesArray.length; i++){
-          peicesArray[i] = peicesArray[i].split("")
-         /* if(peicesArray[i].length < 8){
-            for(let j = peicesArray[i].length; j<8; j++){
-              peicesArray[i].push("1")
+        let move = game.move(data);
+        if (move === null) {
+          //check for a piece where it moved from
+          if(data.substring('x').length > 0) {
+            
+            let pieceName = data.substring(0, 1)
+            if(numFromLetter(pieceName) > -1) {
+              pieceName = "p";
+            
             }
-          }*/
-        }
-        //ex of fen: rnbqkbnr/pppp1ppp/8/4p3/3P4/8/PPP1PPPP/RNBQKBNR 
-        // r n b q k b n r 
-        // pppp1ppp
-        // 8
-        // 4p3
-        // 3P4
-        // 8
-        // PPP1PPPP
-        // RNBQKBNR
-        //if there is a number in the array, replace it with that many 1s
-        for(let i =0; i < 8; i++){
-          //split the array into individual characters
-          for (let j =0; j < 8; j++){
-            //console.log("     j: " + j)
-            if (isNaN(peicesArray[i][j])|| peicesArray[i][j] == "1"){
-              if (isNaN(peicesArray[i][j])){
-              
-                //console.log("     peicesArray[" + i + "][" + j+"]: " + peicesArray[i][j])
+            let loc = [ data.substring(data.length - 1), data.substring(data.length - 2, data.length - 1)] 
+            loc[0] = numFromLetter(loc[0])
+            loc[1] = parseInt(loc[1]) - 1
+            let closestPiece = null;
+            
+            for(let v of game.board()){
+              for(let s of v){
+                if(s != null && s.type == pieceName && s.color == game.turn()){
+                  if(closestPiece == null) {
+                    closestPiece = s;
+                  } else {
+                    let closestPieceLoc = [closestPiece.loc[0], closestPiece.loc[1]]
+                    let sLoc = [s.loc[0], s.loc[1]]
+                    if(Math.abs(closestPieceLoc[0] - loc[0]) + Math.abs(closestPieceLoc[1] - loc[1]) > Math.abs(sLoc[0] - loc[0]) + Math.abs(sLoc[1] - loc[1])) {
+                      closestPiece = s;
+                    }
+                  }
+                }
               }
-              continue
             }
-            else{
-              
-              try{
-                expand(peicesArray);
-
-                }
-                catch(e){
-                  continue
-                }
-            }
+            if(closestPiece != null) {
+              let closestPieceLoc = [closestPiece.loc[0], closestPiece.loc[1]]
+              let sLoc = [s.loc[0], s.loc[1]]
+              game.put({type: closestPiece.type, color: closestPiece.color}, sLoc)
+              game.remove(closestPieceLoc)
+              }
           }
         }
-        for(let i =0; i<8; i++){
-          try{
-          peicesArray[i] = peicesArray[i].split("");
-          }catch{
-            continue
-          }
-        }
-        
-        var dataTemp = (["a","b","c","d","e","f","g"].includes(data.substring(0,1))) ? "p" + data : data 
-        var pieceName = dataTemp.substring(0,1)       
-        var peicelocal = data.substring(data.length-2, data.length)
-        
-        peicesArray[numFromLetter(peicelocal.substring(0,1))][parseInt(peicelocal.substring(data.length-1, data.length))-1] = pieceName.toLowerCase()
-        peicesArray = compress(peicesArray)
-        //at the end of each array in the 2d array, add a / and join the array
-        for(let i =0; i<peicesArray.length; i++){
-          peicesArray[i] = peicesArray[i].join("")
-        }
-        peicesArray = peicesArray.join("/")
-        
-        console.log(fenl)
-        peicesArray  += " w"
-        for(let i = 2; i<fenl.length; i++){
-          console.log("i: " + i + "/ fenl: " + fenl.length)
-          console.log(typeof(peicesArray))
-          if (i <= fenl.length-2){
-            peicesArray += " " + fenl[i]
-          }
-          else{
-            peicesArray += " 0"
-          }
-          //console.log(peicesArray[i])
-        }
-        currentFEN = peicesArray
-        console.log(currentFEN)
-        
-        game.load(currentFEN)
-        console.log("current = " + game.fen())
-        console.log("turn = " + game.turn())
-        game.turn = function() {
-          return 'w';
-        };
-        console.log("new turn = " + game.turn())
-        
-
-        updateStatus()
-        
-
       })
       
       
