@@ -3,6 +3,7 @@ import os
 import flask
 import json 
 import random
+import Scrapper
 #import cohere
 promptStart = f"""
      play a game of chess with me. Respond only with what you move and what place it moved to
