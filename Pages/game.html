@@ -24,7 +24,7 @@
       }
     }
     #board1 {
-      animation: fadeIn 2s cubic-bezier(0.21, 0.88, 0.18, 1);
+      animation: fadeIn 24 cubic-bezier(0.21, 0.88, 0.18, 1);
     }
     body{
           background-color: #181a1b;
@@ -59,6 +59,7 @@
   </div>
 </body>
 <script>
+  //#region chess.js
   /*
  * Copyright (c) 2016, Jeff Hlywa (jhlywa@gmail.com)
  * All rights reserved.
@@ -1707,6 +1708,7 @@ return {
 
 /* export Chess object if using node or any other CommonJS compatible
 * environment */
+  //#endregion
 if (typeof exports !== 'undefined') exports.Chess = Chess;
 /* export Chess object for any RequireJS compatible environment */
 if (typeof define !== 'undefined') define( function () { return Chess;  });
@@ -1728,7 +1730,6 @@ if (typeof define !== 'undefined') define( function () { return Chess;  });
     // only pick up pieces for the side to move
     if ((game.turn() === 'w' && piece.search(/^b/) !== -1) ||
       (game.turn() === 'b'))   {
-        console.log("turn: " + game.turn())
       return false
     }
   }
@@ -1757,6 +1758,7 @@ if (typeof define !== 'undefined') define( function () { return Chess;  });
     }).then((response) => {
         return response.text()
       }).then((data) => {
+        
         console.log(data)
         let move = game.move(data);
         console.log(move)
@@ -1796,25 +1798,28 @@ if (typeof define !== 'undefined') define( function () { return Chess;  });
               console.log(loc[1] + loc[0])
               let b = game.put({type: closestPiece.type, color: closestPiece.color},  loc[1] + loc[0])
               console.log(closestPieceLoc[0] + closestPieceLoc[1])
+              
               let b2 = game.remove(closestPieceLoc[0] + closestPieceLoc[1])
             
             }
             else{
               let b = game.put({type: pieceName, color:'b'},  loc[1] + loc[0])
             }
-            
-            game.setTurn('w')
-              var f  = game.fen()
-              var fsp = f.split(" ")
-              fsp[1] = 'w'
-              fsp[3] = '-'
-
-              var final = '';
-              game.load_pgn("")
-              game.load(fsp.join(" "))
-              updateStatus()
           }
         }
+        game.setTurn('w')
+        var f  = game.fen()
+        var fsp = f.split(" ")
+        fsp[1] = 'w'
+        fsp[3] = '-'
+        console.log("b")
+        game.load_pgn("")
+        game.load(fsp.join(" "))
+        board.position(game.fen())
+        onDrop(move,move)
+        updateStatus()
+        console.log("a")
+        
       })
   }
   async function getGPTComments() {
