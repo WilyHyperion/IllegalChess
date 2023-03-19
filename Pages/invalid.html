@@ -80,6 +80,7 @@
       var j = 0;
       var newtext = "";
       var textFilled = 0;
+      var counter =0;
       setInterval(function(){
         if(move){
           if(textFilled >0){
@@ -87,7 +88,7 @@
               if (text[i] == " ") {
                 newtext += " ";
                 continue;
-              }
+              } else if(text[i] == "")
               newtext += letters[Math.floor(Math.random() * letters.length)];
 
               //wait 0.1 seconds before adding the next letter
