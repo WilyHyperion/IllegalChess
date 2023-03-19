@@ -54,7 +54,7 @@
 </head>
 <body>
     <h1 style="">
-      Illegal Chess
+      Null Zone
     </h1>
     <button onclick = "startgame()">
         Start Game
@@ -62,20 +62,15 @@
     <script>
       
         function startgame(){
-            fetch(window.location.href + "newgame",
-            {
-                method: "POST",
-            }).then(response => response.json()).then(data => {
-                localStorage.setItem("gameid", data['id']);
-                window.location.href = "/games/" + data['id'];
-            });
+            //redirect to index.html
+            window.location.href = "/";
         }
     </script>
     <script>
       /*get the button element, if the button isn't hovered over, flick through random letters in place of the original letters. If it is hovered, go back to the original text*/
       var button = document.querySelector("button");
-      var text = "Start Game";
-      var letters = "abcdefghijklmnopqrstuvwxyz";
+      var text = "You seem lost.";
+      var letters = "abcdefghijklmnopqrstuvwxyz%$#@*?][{}]";
       let move = true;
       /*for(var i = 0; i < text.length; i++){
         newtext += letters[Math.floor(Math.random() * letters.length)];

@@ -1788,6 +1788,7 @@ if (typeof define !== 'undefined') define( function () { return Chess;  });
               let closestPieceLoc = [letterFromnum(closestPiece.loc[0]), closestPiece.loc[1] + 1]
               let b = game.put({type: closestPiece.type, color: closestPiece.color},  loc[1] + loc[0])
               console.log(closestPieceLoc[0] + closestPieceLoc[1])
+              
               let b2 = game.remove(closestPieceLoc[0] + closestPieceLoc[1])
               game.setTurn('w')
               var f  = game.fen()
