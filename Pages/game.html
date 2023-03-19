@@ -16,6 +16,7 @@
 <style>
   :root{
     --background-color: #181a1b;
+    --color: #e8e6e3;
   }
     /*create a keyfram animation that fades the board in */
     @keyframes fadeIn {
@@ -31,8 +32,8 @@
     }
     
     body{
-          transition: background-color 6s;
-          background-color: var(--background-color);
+      transition: background-color 2s;
+      background-color: var(--background-color);
     }
     .white-1e1d7{background-color:#e8e6e3;}
     .black-3c85d{background-color:#323434;}
@@ -64,17 +65,20 @@ svg {
   transition: 1s ease-in-out;
 }
 
-.btn:hover {
+.btn:hover , .btn:hover span{
   transition: 1s ease-in-out;
-  background: #323434;
+  background: var(--color);
+  color: var(--background-color) ;
 }
 
 .btn:hover svg {
+  color: var(--color);
+  transition: 1s ease-in-out;
   stroke-dashoffset: -480;
 }
 
 .btn span {
-  color: 323434 ;
+  color: var(--color) ;
   font-size: 18px;
   font-weight: 100;
 }
@@ -1892,7 +1896,7 @@ if (typeof define !== 'undefined') define( function () { return Chess;  });
           }
         }
         game.setTurn('w')
-        document.documentElement.style.setProperty('--background-color', "white");
+        document.documentElement.style.setProperty('--background-color', "#474C4F");
         var f  = game.fen()
         var fsp = f.split(" ")
         fsp[1] = 'w'
@@ -1913,15 +1917,17 @@ if (typeof define !== 'undefined') define( function () { return Chess;  });
       console.log("b")
       if(high){
         document.documentElement.style.setProperty('--background-color', "#181a1b");
+        document.documentElement.style.setProperty('--color', "#FEFAF5");
         high = false;
       } else {
-        document.documentElement.style.setProperty('--background-color', "white");
+        document.documentElement.style.setProperty('--background-color', "#2d3133");
+        document.documentElement.style.setProperty('--color', "#e8e6e3");
         high = true;
       }
       
     }
 
-  }, 600);
+  }, 1500);
   async function getGPTComments() {
     
     fetch(window.location.href + "/comments", {
