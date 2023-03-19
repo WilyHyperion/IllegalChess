@@ -45,15 +45,31 @@
             font-family: 'Source Code Pro', monospace;
             font-weight: 400;
             transition: 0.5s;
+            opacity: 1;
         }
         button:hover{
           color: #fffdfa;
+        }
+        button:active{
+          color: #181a1b;
+          animation-iteration-count: 1;
+          animation-direction: normal;
+          animation: fadeout 2s ease-in-out forwards;
+        }
+        /*create a fade out animation*/
+        @keyframes fadeout{
+            from{
+                color: #fffdfa;
+            }
+            to{
+                color: #181a1b;
+            }
         }
 
     </style>
 </head>
 <body>
-  <h1 style="">
+  <h1 >
       Illegal Chess
     </h1>
     <button onclick = "startgame()">
@@ -62,6 +78,8 @@
     <script>
       
         function startgame(){
+          //wait for 2 seconds before redirecting to the game page
+          
             fetch(window.location.href + "newgame",
             {
                 method: "POST",
@@ -69,6 +87,7 @@
                 localStorage.setItem("gameid", data['id']);
                 window.location.href = "/games/" + data['id'];
             });
+          
         }
     </script>
     <script>
@@ -137,7 +156,7 @@
               textFilled++;
           }
         }
-      }, 50)
+      }, 40)
       //make the previous code in the comments loop until the button is hovered over
       
       

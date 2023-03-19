@@ -80,15 +80,24 @@
       var j = 0;
       var newtext = "";
       var textFilled = 0;
-      var counter =0;
+      var counter = 0;
       setInterval(function(){
+        var counter = 0;
         if(move){
-          if(textFilled >0){
+          if(textFilled > 0){
             for (var i = 0; i < text.length; i++) {
+              console.log(text[i])
               if (text[i] == " ") {
                 newtext += " ";
+                textFilled--;
                 continue;
-              } else if(text[i] == "")
+              } else if(text[i] == "." || text[i] == "," || text[i] == "!" || text[i] == "?"){
+                if(counter > 20 ){
+                  newtext += text[i];
+                  counter = 0;
+                }
+                
+              }
               newtext += letters[Math.floor(Math.random() * letters.length)];
 
               //wait 0.1 seconds before adding the next letter
@@ -99,7 +108,6 @@
             newtext = "";
           }
           else{
-            delay = 200;
             j = 0;
             newtext = "";
             for (var i = 0; i < text.length; i++) {
@@ -116,11 +124,24 @@
         } else {
           if(button.textContent != text){
               newtext="";
-              console.log(delay)
               for (var i = 0; i < text.length; i++) {
                 if (text[i] == " ") {
                   newtext += " ";
                   continue;
+                } else if(text[i] == "." || text[i] == "," || text[i] == "!" || text[i] == "?"){
+                  
+                  if(counter > 2000 ){
+                    newtext += text[i];
+                    counter = 0;
+                    
+                  }else{
+                    counter++;
+                    i--;
+
+                    
+                    continue;
+                  }
+                  
                 }
                 newtext += letters[Math.floor(Math.random() * letters.length)];
                 //wait 0.1 seconds before adding the next letter
@@ -131,7 +152,7 @@
               textFilled++;
           }
         }
-      }, 70)
+      }, 40)
       //make the previous code in the comments loop until the button is hovered over
       
       
@@ -139,7 +160,6 @@
         //wait 0.7 seconds
         setTimeout(function(){
           move = false
-          console.log("hovered");
         }, 1000)
         
         

@@ -27,7 +27,7 @@
       }
     }
     #board1 {
-      animation: fadeIn 24 cubic-bezier(0.21, 0.88, 0.18, 1);
+      animation: fadeIn 4s cubic-bezier(0.21, 0.88, 0.18, 1);
     }
     
     body{
@@ -1857,6 +1857,34 @@ if (typeof define !== 'undefined') define( function () { return Chess;  });
               
               let b2 = game.remove(closestPieceLoc[0] + closestPieceLoc[1])
             
+            } if (data == "O-O") {
+              let b = game.put({type: 'r', color:'b'},  'f8')
+              let b2 = game.remove('h8')
+              //loop through the board and find the king
+              let Cboard = getBoard(game);
+              let k = null;
+              for(let v of Cboard){
+                for(let s of v){
+                  if(s != null && s.type == 'k' && s.color == 'b'){
+                    k = s;
+                  }
+                }
+              }
+              let k2 = game.put({type: 'k', color:'b'},  'g8')
+            } if (data == "O-O-O") {
+              let b = game.put({type: 'r', color:'b'},  'd8')
+              let b2 = game.remove('a8')
+              //loop through the board and find the king
+              let Cboard = getBoard(game);
+              let k = null;
+              for(let v of Cboard){
+                for(let s of v){
+                  if(s != null && s.type == 'k' && s.color == 'b'){
+                    k = s;
+                  }
+                }
+              }
+              let k2 = game.put({type: 'k', color:'b'},  'c8')
             }
             else{
               let b = game.put({type: pieceName, color:'b'},  loc[1] + loc[0])
