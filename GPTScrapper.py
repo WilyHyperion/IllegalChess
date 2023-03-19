@@ -16,7 +16,6 @@ import time
 driver = uc.Chrome(use_subprocess=True)
 target  = 'https://chat.openai.com/chat'
 driver.get(target)
-driver.set_window_position(0,-1000)
 lines = open('creds.txt', 'r').readlines()
 cfClear = lines[0].strip()
 nextAuthCsrf = lines[1].strip()
@@ -35,6 +34,7 @@ btn.click()
 btn  = WebDriverWait(driver, 30).until(EC.element_to_be_clickable((By.CSS_SELECTOR, '.btn.relative.btn-primary.ml-auto')))
 btn.click()
 def gettext(request):
+     print("Getting chatgpt response")
      inbx = WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.CSS_SELECTOR, '.m-0.w-full.resize-none.border-0.bg-transparent.p-0.pr-7')))
      inbx.send_keys(request + '\n')
      output = None

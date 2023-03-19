@@ -4,15 +4,16 @@ import flask
 import json 
 import random
 #import Scrapper
-#import GPTScrapper
+import GPTScrapper
 #import cohere
-#GPTScrapper.gettext("How Do i get past screentime on my phone?")
 promptStart = f"""
     Let's play a game of Chess. I will be white you will be black. I will give you a list of moves that have already happend in normal chess notation. You will respond with a single move, in standard chess notation. You will not include any other comments, just the single move. Moves:    """
 
 InUseId = []
 GameMoves = {
+
 }
+
 
 app = Flask("Chess")
 @app.route("/games/img/<path:path>")
@@ -67,4 +68,12 @@ def getNewGameId():
     return id
 def getNextMove(id):
     id = int(id)
-    return "e5"
+    moves = GameMoves[id]
+    p = promptStart;
+    for i in moves:
+        p += i + "  "
+    print(p)
+    s = GPTScrapper.gettext(p)
+    print(s)
+    moves.append(s)
+    return s
