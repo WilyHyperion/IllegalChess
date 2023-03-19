@@ -65,6 +65,7 @@ def getNewGameId():
         id = random.randint(100, 999)
     InUseId.append(id)
     return id
-def getNextMove(id):
+def getNextMove(id, move):
     id = int(id)
-    return "e4"
+    
+    return "e5"

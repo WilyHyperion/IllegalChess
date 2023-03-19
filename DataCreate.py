@@ -5,6 +5,6 @@ for line in file:
     if not '[' in line:
         newFile.write(line)
     if (line == "\n" ) and ("[" in lastline):
-        newFile.write("<endoftext>")
+        newFile.write("<endoftext>\n")
     lastline = line
 newFile.close()

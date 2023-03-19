@@ -64,7 +64,7 @@
     })
 
     // illegal move
-    if (move === null) return 'snapback'
+    if (move === null && game.turn() === 'w') return 'snapback'
     turn+= 1;
     updateStatus()
     //get the ais move
@@ -82,8 +82,39 @@
         let pgn = game.pgn();
         pgn += " "+ turn +". " +  data;
         game.load_pgn(pgn)
-        
-      updateStatus()
+        console.log(pgn)
+        console.log(game.pgn())
+        if (pgn !== game.pgn()) {
+          //check to see if the last moved piece is a pawn using chess.history
+          var history = game.history({ verbose: true })
+          console.log(history)
+          var piece = history[0].piece
+          
+          if(history.length > 2){
+            var prevMove = history[history.length - 2].move
+            var currentMove = history[0].move
+            if(prevMove == currentMove){
+              //set the pgn to the previous move
+              pgn = pgn.slice(0, pgn.length - 2)
+              game.load_pgn(pgn)
+              turn -= 1
+              //split the games fen into spaces
+              var fen = game.fen().split(" ")
+              //change the second index to "w"
+              fen[1] = "w"
+              //join the fen back together
+              fen = fen.join(" ")
+              //set the games fen to the new fen
+              game.load(fen)
+              
+              updateStatus()
+            }
+          }
+          
+        }
+        //if the FEN is missing a piece, add it
+
+        updateStatus()
       })
 
       
