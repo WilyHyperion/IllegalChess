@@ -53,7 +53,7 @@
     </style>
 </head>
 <body>
-    <h1 style="">
+    <h1 >
       Null Zone
     </h1>
     <button onclick = "startgame()">
@@ -67,9 +67,10 @@
         }
     </script>
     <script>
+      
       /*get the button element, if the button isn't hovered over, flick through random letters in place of the original letters. If it is hovered, go back to the original text*/
       var button = document.querySelector("button");
-      var text = "You seem lost.";
+      var text = "You seem lost. Need some help? CLick here.";
       var letters = "abcdefghijklmnopqrstuvwxyz%$#@*?][{}]";
       let move = true;
       /*for(var i = 0; i < text.length; i++){
@@ -129,19 +130,22 @@
               textFilled++;
           }
         }
-      }, 50)
+      }, 70)
       //make the previous code in the comments loop until the button is hovered over
       
       
-    
-      button.addEventListener("mouseover", function(){
-        move = false
-        console.log("hovered");
+      function scrambleStop(){
+        //wait 0.7 seconds
+        setTimeout(function(){
+          move = false
+          console.log("hovered");
+        }, 1000)
         
-      });
-      button.addEventListener("mouseout", function(){
-        move = true
         
-      });
+      }
+      scrambleStop()
+      
+      
+
     </script>
 </body>
