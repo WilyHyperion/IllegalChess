@@ -7,7 +7,7 @@ import re
 #import Scrapper
 import GPTScrapper
 #import cohere
-promptStart = f"""Let's play a game of Chess. I will be white you will be black. I will give you a list of moves that have already happend in normal chess notation. You will respond with a single move, in standard chess notation. You will not include any other comments, just the single move. If you think an move is illegal or invaild, still provide a move like before Moves:"""
+promptStart = f"""Let's play a game of Chess. I will be white you will be black. I will give you a list of moves that have already happend in normal chess notation. You will respond with a single move, in standard chess notation. You will not include any other comments, just the single move. You are a player that plays extremely offensively and likes to capture peices whenever possible. If you think an move is illegal or invaild, still provide a move like before Moves:"""
 #promptStart = f""""Lets play chess. Moves so far: """
 InUseId = []
 GameMoves = {
@@ -73,17 +73,21 @@ def getNextMove(id, special = False):
     id = int(id)
     moves = GameMoves[id]
     p = promptStart;
-    for i in moves:
-        p += i + "  "
+    if (len(moves) > 1):
+      p = f"""I make the move {moves[-1]}. Here are the previos moves: {moves}. Provide your response in standard chess notation with no accompanying comments.  """
+    else:
+      for i in moves:
+        p += i + " "
     print(p)
     s = GPTScrapper.gettext(p)
     print(s)
+    
     # split s by spaces and find the first one that is a valid move. find a valid move by seeing if there is a number and a letter in the the text anywhere
     if " " in s:
       while " " in s:
-        s = GPTScrapper.gettext(p + ".  Please only provide a single move in standard chess notation and nothing else.")
-        print(s + "[new]")
-      """ move = s.split(" ")
+        s = GPTScrapper.gettext("Your provided move contained other text. Please only provide 1 standard chess notation move with no accompanying comments. For example, \"e5\". I will repeat the moves made. " + str(moves))
+        print(s + "[replaced]")
+      """ move = s.split(" 0")
       hasInt = False;
       hasStr = False;
       for i in move:
@@ -99,8 +103,14 @@ def getNextMove(id, special = False):
           hasStr = False
       if(s == temp):
         s = "e4" """
-    
     moves.append(s)
+    if "+" in s:
+      s.replace("+", "")
+    if "#" in s:
+      s.replace("#", "")
+    if "x" in s:
+      #remove all text before the x
+      s.replace(s[:s.index("x")], "")
     return s
 @app.route("/games/<id>/comments", methods = ['GET'])
 def getComments(id):
