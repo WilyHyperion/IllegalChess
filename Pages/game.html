@@ -1882,16 +1882,13 @@
 
     async function onDrop(source, target) {
       // see if the move is legal
-        const ki = new Piece({ type: "k", color: "b" })
-        console.log(game.get(target) === ki)
-        console.log(game.get(target))
-        if (move === null && game.turn() === 'w') return 'snapback'
         var move = game.move({
             from: source,
             to: target,
             promotion: 'q'
         })
         game.move('w')
+        if (move === null && game.turn() === 'w') return 'snapback'
         // illegal move
         //check to see if there is a king in the target square
         
@@ -2000,11 +1997,13 @@
     let high = true;
     setInterval(() => {
         if (game.turn() === 'b') {
-            if (high) {
-                document.getElementById("board1").classList.add('board-border');
+            if(high){
+                document.documentElement.style.setProperty('--background-color', "#181a1b");
+                document.documentElement.style.setProperty('--color', "#FEFAF5");
                 high = false;
             } else {
-                
+                document.documentElement.style.setProperty('--background-color', "#2d3133");
+                document.documentElement.style.setProperty('--color', "#e8e6e3");
                 high = true;
             }
 

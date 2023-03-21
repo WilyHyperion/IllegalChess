@@ -7,9 +7,12 @@ import re
 # import Scrapper
 import GPTScrapper
 
-# import cohere
-promptStart = f"""Let's play a game of Chess. I will be white you will be black. You will respond with a single move, in standard chess notation. You will not include any other comments, just the single move. You are a player that plays extremely offensively and likes to capture pieces whenever possible. If you think an move is illegal or invalid, still provide a move. Moves:"""
-# promptStart = f""""Lets play chess. Moves so far: """
+#Default prompt
+#promptStart = f"""Let's play a game of Chess. I will be white you will be black. You will respond with a single move, in standard chess notation. You will not include any other comments, just the single move. You are a player that plays extremely offensively and likes to capture pieces whenever possible. If you think an move is illegal or invalid, still provide a move. Moves:"""
+
+# All pieces are Knights prompt
+promptStart = f"""Let's play a game of Chess. I will be white you will be black. You will respond with a single move, in standard chess notation. You will not include any other comments, just the single move. We are playing a variation of chess called "Knight chess". In pawn chess, all of black's pieces except for the king is a knight. If you think an move is illegal or invalid, still provide a move. Moves:"""
+
 InUseId = []
 GameMoves = {
 
@@ -115,8 +118,10 @@ def getNextMove(id, special=False):
     if " " in s or "." in s:
         while " " in s or "." in s:
             s = GPTScrapper.gettext(
-                "I will give you text, please parse it to find the move. Respond with only that move, no"
-                "other accompanying comments. Here is the text: " + s)
+                "I will give you text, please parse it to find the move. Respond with only that move, no" 
+                "other accompanying comments. Here is the text: \"" + s + "\". If there is no chess move, create a random chess move.")
+            #for some reason "noother" gives a better parsed text than "no other"
+
             print(s + "[replaced]")
         """ move = s.split(" 0")
       hasInt = False;
@@ -140,8 +145,8 @@ def getNextMove(id, special=False):
     if "#" in s:
         s.replace("#", "")
     if "x" in s:
-        # remove all text before the x
-        s.replace(s[:s.index("x")], "")
+        # if there is an x, remove it
+        s.replace("x", "")
     return s.lower()
 
 
