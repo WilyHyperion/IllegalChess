@@ -8,10 +8,7 @@ import re
 import GPTScrapper
 
 # import cohere
-promptStart = f"""Let's play a game of Chess. I will be white you will be black. You will respond with a single move, 
-in standard chess notation. You will not include any other comments, just the single move. You are a player that 
-plays extremely offensively and likes to capture pieces whenever possible. If you think an move is illegal or 
-invalid, still provide a move. Moves:"""
+promptStart = f"""Let's play a game of Chess. I will be white you will be black. You will respond with a single move, in standard chess notation. You will not include any other comments, just the single move. You are a player that plays extremely offensively and likes to capture pieces whenever possible. If you think an move is illegal or invalid, still provide a move. Moves:"""
 # promptStart = f""""Lets play chess. Moves so far: """
 InUseId = []
 GameMoves = {
@@ -145,7 +142,7 @@ def getNextMove(id, special=False):
     if "x" in s:
         # remove all text before the x
         s.replace(s[:s.index("x")], "")
-    return s
+    return s.lower()
 
 
 @app.route("/games/<id>/comments", methods=['GET'])

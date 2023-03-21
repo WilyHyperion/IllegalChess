@@ -591,7 +591,7 @@
 
         function get(square) {
             var piece = board[SQUARES[square]];
-            return (piece) ? {type: piece.type, color: piece.color} : null;
+            return (piece) ? piece : null;
         }
 
         function put(piece, square) {
@@ -1783,9 +1783,7 @@
                  * move is made
                  */
                 var pretty_move = make_pretty(move_obj);
-                console.log("EEEEE " + turn)
                 make_move(move_obj);
-                console.log(turn)
                 return pretty_move;
             },
 
@@ -1883,7 +1881,11 @@
     let turn = 0
 
     async function onDrop(source, target) {
-        // see if the move is legal
+      // see if the move is legal
+        const ki = new Piece({ type: "k", color: "b" })
+        console.log(game.get(target) === ki)
+        console.log(game.get(target))
+        if (move === null && game.turn() === 'w') return 'snapback'
         var move = game.move({
             from: source,
             to: target,
@@ -1891,11 +1893,12 @@
         })
         game.move('w')
         // illegal move
-        if (move === null && game.turn() === 'w') return 'snapback'
+        //check to see if there is a king in the target square
+        
         turn += 1;
         updateStatus()
         //get the ais move
-        document.documentElement.style.setProperty('--background-color', "#181a1b");
+        document.getElementById("board1").classList.add('board-border');
         await fetch(window.location.href + "/move", {
             method: 'POST',
             headers: {
@@ -1908,9 +1911,7 @@
             return response.text()
         }).then((data) => {
 
-            console.log(data)
             let move = game.move(data);
-            console.log(move)
             if (move === null) {
                 //check for a piece where it moved from
                 if (data.substring('x').length > 0) {
@@ -1930,7 +1931,6 @@
                                     closestPiece = s;
                                 } else {
                                     numLoc = [numFromLetter((loc[1])), parseInt(loc[0]) - 1]
-                                    console.log(numLoc)
                                     let dist1 = Math.sqrt(Math.pow(numLoc[0] - s.loc[0], 2) + Math.pow(numLoc[1] - s.loc[1], 2))
                                     let dist2 = Math.sqrt(Math.pow(numLoc[0] - closestPiece.loc[0], 2) + Math.pow(numLoc[1] - closestPiece.loc[1], 2))
                                     if (dist1 < dist2) {
@@ -1942,11 +1942,8 @@
                     }
 
                     if (closestPiece != null) {
-                        console.log(closestPiece)
                         let closestPieceLoc = [letterFromnum(closestPiece.loc[0]), closestPiece.loc[1] + 1]
-                        console.log(loc[1] + loc[0])
                         let b = game.put({type: closestPiece.type, color: closestPiece.color}, loc[1] + loc[0])
-                        console.log(closestPieceLoc[0] + closestPieceLoc[1])
 
                         let b2 = game.remove(closestPieceLoc[0] + closestPieceLoc[1])
 
@@ -1986,18 +1983,16 @@
                 }
             }
             game.setTurn('w')
-            document.documentElement.style.setProperty('--background-color', "#2d3133");
+            document.getElementById("board1").classList.add('board-border');
             var f = game.fen()
             var fsp = f.split(" ")
             fsp[1] = 'w'
             fsp[3] = '-'
-            console.log("b")
             game.load_pgn("")
             game.load(fsp.join(" "))
             board.position(game.fen())
             onDrop(move, move)
             updateStatus()
-            console.log("a")
 
         })
     }
@@ -2005,12 +2000,11 @@
     let high = true;
     setInterval(() => {
         if (game.turn() === 'b') {
-            console.log("b")
             if (high) {
                 document.getElementById("board1").classList.add('board-border');
                 high = false;
             } else {
-                document.getElementById("board1").classList.remove('board-border');
+                
                 high = true;
             }
 
