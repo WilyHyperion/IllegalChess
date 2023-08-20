@@ -2,7 +2,7 @@
 Play chess against ChatGPT, the way *it* wants to play. <br>
 You, a mere mortal, are stuck to the rules of chess. ChatGPT, however, is not. Play against the bot while it makes illegal moves. Try and win. If you can >:)
 <br> <br>
-Open ai API scraper powered by [WilyHyperion](https://github.com/WilyHyperion), keep a lookout for a repo 👀
+~~Open ai API scraper powered by [WilyHyperion](https://github.com/WilyHyperion), keep a lookout for a repo 👀~~ Yeah not happening. aslo i shoudl probably switch this to an actual key 🤔
 <br>
 ## Intallation
 Coming Soon
